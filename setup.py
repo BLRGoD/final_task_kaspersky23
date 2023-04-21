@@ -8,7 +8,8 @@ setup(
     description='for kaspersky',
     install_requires=[
         'fastapi==0.70.0',
-        'requests==2.26.0'
+        'requests==2.26.0',
+        'uvicorn==0.15.0'
     ],
     script=['app/main.py']
 )
