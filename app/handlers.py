@@ -1,6 +1,6 @@
 from fastapi import FastAPI
+from app.main import app
 
-app = FastAPI()
 
 
 @app.get('/api/docs')
@@ -28,4 +28,11 @@ def stop_proc(process_name: str):
 def get_status(process_name: str):
     return {
         'status': 'running'
+    }
+
+
+@app.get('/api/{process_name}/result')
+def get_result(process_name: str):
+    return {
+        'result': 'some result'
     }
