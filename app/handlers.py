@@ -4,6 +4,7 @@ from multiprocessing import Process
 
 router = APIRouter()
 process = Process(target=proc)
+status = False
 
 
 @router.get('/api/docs', name='documentation')
@@ -17,6 +18,8 @@ def read_docs():
 def start_proc(process_name: str):
     if process_name == 'process':
         process.start()
+        global status
+        status = True
         return {
             'message': 'process started'
         }
@@ -30,6 +33,8 @@ def start_proc(process_name: str):
 def stop_proc(process_name: str):
     if process_name == 'process':
         process.terminate()
+        global status
+        status = False
         return {
             'message': 'process terminated'
         }
@@ -41,9 +46,15 @@ def stop_proc(process_name: str):
 
 @router.get('/api/{process_name}', name='status')
 def get_status(process_name: str):
-    return {
-        'status': 'running'
-    }
+    if process_name == 'process':
+        return {'status': 'running'} \
+            if status \
+            else \
+            {'status': 'not running'}
+    else:
+        return {
+            'message': 'process not found'
+        }
 
 
 @router.get('/api/{process_name}/result', name='result')
